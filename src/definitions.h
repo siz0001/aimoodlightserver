@@ -1,6 +1,10 @@
 // version
 String version = "2.0";
 
+// timing count
+int count = 0;
+int term = 1000;
+
 // wifi setting
 const char *ssid_ap = "AIMoodLight";
 const char *password_ap = "";
@@ -16,7 +20,7 @@ FirebaseData ledData;
 
 // neopixel setting
 #define LEDSPIN 2                                                                  
-int NUMPIXELS = 12;
+int NUMPIXELS = 18;
 Adafruit_NeoPixel pixels(NUMPIXELS, LEDSPIN, NEO_RGB + NEO_KHZ800);
 int mr = 0;
 int mg = 0;

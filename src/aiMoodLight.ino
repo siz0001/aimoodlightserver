@@ -1,16 +1,15 @@
 // library import
 #include "FirebaseESP8266.h"
-#include <WiFiManager.h>        // For WiFi config AP
-#include <ESP8266WiFi.h>        // For check MacAddress
-#include <WebSocketsServer.h>   // For WebSocketComm
-#include <SPI.h>                // For OLED
-#include <Wire.h>               // For OLED
-#include <Adafruit_SSD1306.h>   // For OLED
-#include <Adafruit_NeoPixel.h>  // For Neopixel
+#include <WiFiManager.h>       // For WiFi config AP
+#include <ESP8266WiFi.h>       // For check MacAddress
+#include <WebSocketsServer.h>  // For WebSocketComm
+#include <SPI.h>               // For OLED
+#include <Wire.h>              // For OLED
+#include <Adafruit_SSD1306.h>  // For OLED
+#include <Adafruit_NeoPixel.h> // For Neopixel
 #include "credential.h"
 #include "definitions.h"
 #include "externalFunc.h"
-
 
 void setup()
 {
@@ -18,7 +17,7 @@ void setup()
   Serial.begin(9600);
 
   pinMode(LEDSPIN, OUTPUT);
-  
+
   wifiManager.autoConnect(ssid_ap, password_ap); // wifi connect
   // waiting wifi connect
   while (WiFi.status() != WL_CONNECTED)
@@ -30,34 +29,41 @@ void setup()
   FirebaseSetup();
   DisplaySetup();
   GetExternalIP();
-  
+
   pixels.begin();
   pixels.show();
 }
 
 void loop()
 {
-  if (Firebase.getString(ledData, "/Controller/" + macID + "/ledData"))
+  pixels.setBrightness(0);
+
+  if (count % term == 0)
   {
-    Serial.println(ledData.stringData());
-    if (ledData.stringData())
+    pixels.setBrightness(100);
+    /* if (Firebase.getString(ledData, "/Controller/" + macID + "/ledData"))
     {
-      mg = ledData.stringData().substring(1, 4).toInt();
-      mr = ledData.stringData().substring(4, 7).toInt();
-      mb = ledData.stringData().substring(7, 10).toInt();
-      uint8_t brightness = ledData.stringData().substring(10, 13).toInt();
       Serial.println(ledData.stringData());
-      Serial.println(mr);
-      Serial.println(mg);
-      Serial.println(mb);
-      Serial.println(brightness);
-      for (int i = 0; i < NUMPIXELS; i++)
+      if (ledData.stringData())
       {
-        pixels.setPixelColor(i, pixels.Color(mr, mg, mb));
+        mg = ledData.stringData().substring(1, 4).toInt();
+        mr = ledData.stringData().substring(4, 7).toInt();
+        mb = ledData.stringData().substring(7, 10).toInt();
+        uint8_t brightness = ledData.stringData().substring(10, 13).toInt();
+        Serial.println(ledData.stringData());
+        Serial.println(mr);
+        Serial.println(mg);
+        Serial.println(mb);
+        Serial.println(brightness);
+        for (int i = 0; i < NUMPIXELS; i++)
+        {
+          pixels.setPixelColor(i, pixels.Color(mr, mg, mb));
+        }
+        pixels.setBrightness(brightness);
+        // delay(1000);
       }
-      pixels.setBrightness(brightness);
-      pixels.show();
-      delay(1000);
-    }
+    } */
   }
+  pixels.show();
+  count++;
 }
